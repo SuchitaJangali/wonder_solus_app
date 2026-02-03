@@ -1,7 +1,9 @@
-// Article Card Widget
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/utils/common_widgets/size.dart';
+import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
+import 'package:wonder_souls/src/utils/extensions/context_text.dart';
 
 class ArticleCard extends StatelessWidget {
   final String imageUrl;
@@ -17,81 +19,47 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              imageUrl,
-              width: 200.w,
-              height: 140.w,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: 200.w,
-                  height: 140.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.grey[200],
-                  ),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: const Color(0xFF2DD4A3),
-                    ),
-                  ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 20.w,
-                  height: 140.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.orange.shade300, Colors.pink.shade200],
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.article,
-                    size: 50,
-                    color: Colors.white,
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium, //AppTextStyles.bodyMediumRegular,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 4,
+      shadowColor: context.onSurface.withAlpha(25),
+      color: context.surface,
+      child: SizedBox(
+        width: 200.w,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 12,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,  // ✅ LIMIT decoded image size
+  memCacheWidth: 800,
+  memCacheHeight: 600,
                 ),
               ),
-              8.w.width,
-              const Icon(Icons.more_vert, size: 20, color: Colors.black),
-            ],
-          ),
-          8.h.height,
-          Text(date, style: Theme.of(context).textTheme.labelSmall),
-        ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.text.bodyMedium,
+                  ),
+                  6.h.height,
+                  Text(date, style: context.text.labelSmall),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

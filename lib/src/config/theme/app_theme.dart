@@ -28,6 +28,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         foregroundColor: scheme.surface,
+        surfaceTintColor: scheme.surface,
       ),
       cardTheme: CardThemeData(
         color: scheme.surfaceContainerHighest,

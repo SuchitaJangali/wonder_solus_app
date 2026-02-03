@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/core/assets/assets.dart';
 import 'package:wonder_souls/src/config/theme/app_colors.dart';
-import 'package:wonder_souls/src/features/auth/home/presentation/screens/home_screen.dart';
+import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-  static const String routeName = "/SplashScreen";
+  static const String routeName = "/";
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -17,9 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-      Duration(seconds: 5), // Changed from microseconds to seconds
+      Duration(seconds: 2), // Changed from microseconds to seconds
     ).then((_) {
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      Navigator.pushReplacementNamed(context, HomeBottomBar.routeName);
     });
   }
 
