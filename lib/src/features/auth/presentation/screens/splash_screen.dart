@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/core/assets/assets.dart';
 import 'package:wonder_souls/src/config/theme/app_colors.dart';
+import 'package:wonder_souls/src/features/auth/presentation/screens/boarding_screens.dart';
 import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       Duration(seconds: 2), // Changed from microseconds to seconds
     ).then((_) {
-      Navigator.pushReplacementNamed(context, HomeBottomBar.routeName);
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, BoardingScreens.routeName);
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/route/app_routes.dart';
 import 'package:wonder_souls/src/config/theme/app_theme.dart';
+import 'package:wonder_souls/src/features/auth/presentation/screens/boarding_screens.dart';
 import 'package:wonder_souls/src/features/auth/presentation/screens/splash_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

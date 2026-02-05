@@ -36,25 +36,48 @@ class ArticleCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
-                  fit: BoxFit.cover,  // ✅ LIMIT decoded image size
-  memCacheWidth: 800,
-  memCacheHeight: 600,
+                  fit: BoxFit.cover, // ✅ LIMIT decoded image size
+                  memCacheWidth: 800,
+                  memCacheHeight: 600,
+                  errorWidget: (_, __, ___) => Container(
+                    color: context.colors.surface.withAlpha(20),
+                    child: Icon(
+                      Icons.image,
+                      color: context.colors.onSurface.withAlpha(40),
+                      size: 40,
+                    ),
+                  ),
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.text.bodyMedium,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.text.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        6.h.height,
+                        Text(date, style: context.text.labelSmall),
+                      ],
+                    ),
                   ),
-                  6.h.height,
-                  Text(date, style: context.text.labelSmall),
+                  Icon(
+                    Icons.more_vert,
+                    color: context.onSurface,
+                    size: 20.sp,
+                  ),
                 ],
               ),
             ),

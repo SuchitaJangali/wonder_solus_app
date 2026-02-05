@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Screens
 import 'package:wonder_souls/src/features/home/presentation/screens/home_screen.dart';
+import 'package:wonder_souls/src/features/settings/presentation/screens/settings_screens.dart';
 import 'package:wonder_souls/src/features/trips/presentstion/screens/my_trips_screen.dart';
 import 'package:wonder_souls/src/features/trips/presentstion/screens/saved_trips_screen.dart';
 import 'package:wonder_souls/src/utils/common_widgets/size.dart';
@@ -20,12 +21,17 @@ class _HomeBottomBarState extends State<HomeBottomBar>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 
-  final List<String> _titles = ['WonderSolus', 'Saved', 'My Trips', 'Settings'];
+  final List<String> _titles = [
+    'Wonder Solus',
+    'Saved',
+    'My Trips',
+    'Settings',
+  ];
   final List<Widget> _pages = [
     const HomeScreen(),
     const SavedTripsScreen(),
     const MyTripsScreen(),
-    SettingsScreen(),
+    const SettingsScreen(),
   ];
 
   @override
@@ -45,37 +51,51 @@ class _HomeBottomBarState extends State<HomeBottomBar>
     return Scaffold(
       // ✅ Fixed AppBar, title changes with tab
       appBar: AppBar(
+        leadingWidth: 60,
         centerTitle: true,
-
-        leadingWidth: 56,
+        leading: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: context.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.all(4),
+            child: Icon(Icons.eco, color: context.onPrimary),
+          ),
+        ),
 
         title: AnimatedBuilder(
           animation: _tabController,
-          builder: (context, _) => SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: Icon(Icons.eco, color: context.onPrimary),
-                  ),
-                ),
-                Text(
-                  _titles[_tabController.index],
-                  style: context.text.titleLarge,
-                ),
-                30.w.width,
-              ],
-            ),
-          ),
+          builder: (context, _) {
+            return Text(
+              _titles[_tabController.index],
+              style: context.text.titleLarge,
+            );
+          },
         ),
+
+        actions: [
+          // balances leading so title is truly centered
+          AnimatedBuilder(
+            animation: _tabController,
+            builder: (context, _) {
+              return (_tabController.index == 1 || _tabController.index == 2)
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8.h,
+                        horizontal: 16.w,
+                      ),
+                      child: Icon(
+                        Icons.search,
+                        color: context.onSurfaceVariant,
+                      ),
+                    )
+                  : 48.w.width;
+            },
+          ),
+        ],
       ),
 
       // ✅ Body: TabBarView takes full height
@@ -105,14 +125,5 @@ class _HomeBottomBarState extends State<HomeBottomBar>
         ),
       ),
     );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text("settings");
   }
 }

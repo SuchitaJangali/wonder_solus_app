@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/trips/model/trip.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/widgets/date_tabs.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/widgets/expandable_place_card.dart';
+import 'package:wonder_souls/src/utils/common_widgets/circular_icon.dart';
 import 'package:wonder_souls/src/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/utils/extensions/context_text.dart';
@@ -19,14 +22,12 @@ class TripDetailsScreen extends StatefulWidget {
 class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     widget.trip = sampleTrip;
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Staa");
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -35,7 +36,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
             child: Column(
               children: [
                 _buildTripHeader(context),
-                SizedBox(height: 70.h, child: _buildTabs(context)),
+                SizedBox(height: 60.h, child: _buildTabs(context)),
                 _buildPlacesList(context),
               ],
             ),
@@ -45,7 +46,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: context.primary,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.edit, color: Colors.white),
       ),
     );
   }
@@ -61,55 +62,22 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         widget.trip?.name ?? '',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          color: context.onSurface,
-        ),
+        style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w600),
       ),
-      leading: IconButton(
-        icon: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: context.surface,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Center(
-            child: Icon(
-              Icons.arrow_back,
-              size: 24.sp,
-              color: context.onSurface,
-            ),
-          ),
-        ),
-        onPressed: () => Navigator.pop(context),
+      leading: CircularIcon(
+        iconData: Icons.arrow_back_ios_new,
+        onTap: () => Navigator.pop(context),
       ),
-
       actions: [
-        IconButton(
-          icon: Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: context.surface,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(Icons.share, size: 24.sp, color: context.onSurface),
-          ),
-          onPressed: () {},
+        CircularIcon(
+          iconData: Icons.share,
+
+          onTap: () => Navigator.pop(context),
         ),
-        IconButton(
-          icon: Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: context.surface,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(Icons.more_vert, size: 24.sp, color: context.primary),
-          ),
-          onPressed: () {},
+        CircularIcon(
+          iconData: Icons.more_vert,
+
+          onTap: () => Navigator.pop(context),
         ),
       ],
 
@@ -132,7 +100,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Colors.black.withOpacity(0.4)],
+                  colors: [Colors.transparent, Colors.black.withAlpha(10)],
                 ),
               ),
             ),
@@ -224,31 +192,8 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
         itemCount: tabs.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) =>
-            _buildTab(tabs[index], index == 0, context),
+            DateTabs(label: tabs[index], isSelected: index == 0),
         separatorBuilder: (BuildContext context, int index) => 8.w.width,
-      ),
-    );
-  }
-
-  Widget _buildTab(String label, bool isSelected, BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-      decoration: BoxDecoration(
-        color: isSelected ? context.colors.primary : Colors.transparent,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isSelected
-              ? context.colors.primary
-              : context.colors.onSurfaceVariant.withAlpha(150),
-        ),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : context.colors.onSurfaceVariant,
-          fontSize: 13.sp,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-        ),
       ),
     );
   }
@@ -259,140 +204,9 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.all(16.w),
       itemCount: widget.trip?.places.length,
-      itemBuilder: (context, index) =>
-          _buildPlaceCard(widget.trip?.places[index], context),
-    );
-  }
-
-  Widget _buildPlaceCard(Place? place, BuildContext context) {
-    final isRestaurant = place?.category == 'restaurant';
-    final icon = isRestaurant ? Icons.restaurant : Icons.attractions;
-
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10.r,
-            offset: Offset(0, 2.h),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-            child: CachedNetworkImage(
-              imageUrl: place?.imageUrl ?? "",
-              height: 160.h, // ✅ LIMIT decoded image size
-              memCacheWidth: 800,
-              memCacheHeight: 600,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorWidget: (_, __, ___) => Container(
-                height: 160.h,
-                color: Colors.grey[300],
-                child: Icon(Icons.image, size: 64.sp, color: Colors.grey),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      icon,
-                      size: 20.sp,
-                      color: context.colors.onSurface.withAlpha(20),
-                    ),
-                    8.w.width,
-                    Expanded(
-                      child: Text(
-                        place?.name ?? "",
-                        style: context.text.labelMedium,
-                      ),
-                    ),
-                  ],
-                ),
-                8.h.height,
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      size: 16.sp,
-                      color: context.colors.primary,
-                    ),
-                    4.w.width,
-                    Text('${place?.rating}', style: context.text.bodyMedium),
-                    4.w.width,
-                    Text(
-                      '(${place?.reviews} reviews)',
-                      style: context.text.labelSmall?.copyWith(),
-                    ),
-                  ],
-                ),
-                12.h.height,
-                Row(
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 16.sp,
-                      color: context.colors.onSurface.withAlpha(25),
-                    ),
-                    8.w.width,
-                    Text(
-                      '${place?.openTime} - ${place?.closeTime}',
-                      style: context.bodyMedium,
-                    ),
-                  ],
-                ),
-                8.h.height,
-                Row(
-                  children: [
-                    Icon(
-                      Icons.attach_money,
-                      size: 16.sp,
-                      color: context.colors.onSurface.withAlpha(25),
-                    ),
-                    8.w.width,
-                    Text(
-                      '\$${place?.price.toStringAsFixed(2)}',
-                      style: context.bodyMedium,
-                    ),
-                  ],
-                ),
-                12.h.height,
-                InkWell(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.map,
-                        size: 16.sp,
-                        color: context.colors.primary,
-                      ),
-                      8.w.width,
-                      Text(
-                        'View on Google Maps',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: context.colors.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+      itemBuilder: (context, index) => ExpandablePlaceCard(
+        place: widget.trip?.places[index],
+        icon: Icons.restaurant,
       ),
     );
   }

@@ -126,20 +126,20 @@ class _MyTripsScreenState extends State<MyTripsScreen>
           Icon(
             Icons.location_on_outlined,
             size: 64.sp,
-            color: context.onSurface.withOpacity(0.3),
+            color: context.onSurface.withAlpha(76),
           ),
           SizedBox(height: 16.h),
           Text(
             'No trips yet',
             style: context.text.titleLarge?.copyWith(
-              color: context.onSurface.withOpacity(0.6),
+              color: context.onSurface.withAlpha(153),
             ),
           ),
           SizedBox(height: 8.h),
           Text(
             'Start planning your next adventure',
             style: context.text.bodyMedium?.copyWith(
-              color: context.onSurface.withOpacity(0.4),
+              color: context.onSurface.withAlpha(10),
             ),
           ),
         ],
@@ -165,14 +165,4 @@ class TripData {
     required this.category,
     required this.imageUrl,
   });
-}
-
-// Placeholder Settings Screen
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Settings', style: context.text.headlineMedium));
-  }
 }

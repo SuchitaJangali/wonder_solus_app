@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/trips/presentstion/screens/my_trips_screen.dart';
-import 'package:wonder_souls/src/utils/common_widgets/saved_icon.dart';
 import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/utils/extensions/context_text.dart';
 
@@ -19,7 +18,7 @@ class TripCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(12),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -42,7 +41,7 @@ class TripCard extends StatelessWidget {
                   fit: BoxFit.cover,
                   errorWidget: (_, __, ___) => Container(
                     height: 140.h,
-                    color: context.colors.onSurfaceVariant,
+                    color: context.colors.surface.withAlpha(20),
                     child: const Icon(Icons.image, size: 40),
                   ),
                 ),
@@ -76,7 +75,7 @@ class TripCard extends StatelessWidget {
                     // Three dots menu
                     Icon(
                       Icons.more_vert,
-                      color: context.onSurface.withOpacity(0.6),
+                      color: context.onSurface.withAlpha(153),
                       size: 24.sp,
                     ),
                   ],
@@ -85,7 +84,7 @@ class TripCard extends StatelessWidget {
                 Text(
                   '${trip.dateRange} · ${trip.tripType} · ${trip.category}',
                   style: context.text.bodyMedium?.copyWith(
-                    color: context.onSurface.withOpacity(0.6),
+                    color: context.onSurface.withAlpha(153),
                   ),
                 ),
               ],

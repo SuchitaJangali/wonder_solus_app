@@ -17,6 +17,8 @@ class AppTheme {
       surface: isDark ? AppColors.darkBackground : AppColors.lightBackground,
       onSurface: isDark ? AppColors.darkText : AppColors.lightText,
       error: Colors.red,
+      onSurfaceVariant: isDark ? AppColors.darkText : AppColors.lightText,
+
       onError: Colors.white,
     );
 

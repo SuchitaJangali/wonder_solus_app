@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/trips/model/static_data.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/screens/list_article.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/screens/list_destination.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/screens/trip_details_screen.dart';
 import 'package:wonder_souls/src/utils/common_widgets/article_card.dart';
 import 'package:wonder_souls/src/utils/common_widgets/destination_card.dart';
 import 'package:wonder_souls/src/utils/common_widgets/size.dart';
@@ -55,12 +58,20 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Popular Destinations', style: context.titleLarge),
-                Row(
-                  children: [
-                    Text('View All', style: context.primaryLabel),
-                    4.w.width,
-                    Icon(Icons.arrow_forward, color: context.primary, size: 20),
-                  ],
+                InkWell(
+                  onTap: () =>
+                      Navigator.pushNamed(context, ListDestination.routeName),
+                  child: Row(
+                    children: [
+                      Text('View All', style: context.primaryLabel),
+                      4.w.width,
+                      Icon(
+                        Icons.arrow_forward,
+                        color: context.primary,
+                        size: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -77,13 +88,19 @@ class HomeScreen extends StatelessWidget {
                 separatorBuilder: (_, __) => SizedBox(width: 8.w),
                 itemBuilder: (context, index) {
                   final d = destinations[index];
-                  return DestinationCard(
-                    imageUrl: d['imageUrl']!,
-                    city: d['city']!,
-                    country: d['country']!,
-                    flagEmoji: d['flagEmoji']!,
-                    cardWidth: 200.w,
-                    // compact
+                  return InkWell(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      TripDetailsScreen.routeName,
+                    ),
+                    child: DestinationCard(
+                      imageUrl: d['imageUrl']!,
+                      city: d['city']!,
+                      country: d['country']!,
+                      flagEmoji: d['flagEmoji']!,
+                      cardWidth: 200.w,
+                      // compact
+                    ),
                   );
                 },
               ),
@@ -95,12 +112,21 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Popular Articles', style: context.titleLarge),
-                Row(
-                  children: [
-                    Text('View All', style: context.primaryLabel),
-                    4.w.width,
-                    Icon(Icons.arrow_forward, color: context.primary, size: 20),
-                  ],
+                InkWell(
+                  onTap: () =>
+                      Navigator.pushNamed(context, ListArticle.routeName),
+
+                  child: Row(
+                    children: [
+                      Text('View All', style: context.primaryLabel),
+                      4.w.width,
+                      Icon(
+                        Icons.arrow_forward,
+                        color: context.primary,
+                        size: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -129,15 +155,5 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-// ---------------- OTHER SCREENS ----------------
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Settings'));
   }
 }

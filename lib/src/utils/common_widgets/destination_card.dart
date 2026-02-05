@@ -62,8 +62,12 @@ class DestinationCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorWidget: (_, __, ___) => Container(
                         height: imageHeight,
-                        color: colors.onSurfaceVariant,
-                        child: const Icon(Icons.image, size: 40),
+                        color: colors.surface,
+                        child: Icon(
+                          Icons.image,
+                          color: colors.surface.withAlpha(20),
+                          size: 40,
+                        ),
                       ),
                     ),
                   ),
@@ -74,20 +78,38 @@ class DestinationCard extends StatelessWidget {
 
             Padding(
               padding: EdgeInsets.all(12.sp),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
-                  Text(city, style: textTheme.labelMedium),
-                  6.h.height,
-                  Row(
-                    children: [
-                      Text(flagEmoji, style: const TextStyle(fontSize: 16)),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: Text(country, style: textTheme.bodyMedium),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          city,
+                          style: context.text.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        6.h.height,
+                        Row(
+                          children: [
+                            Text(
+                              flagEmoji,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Text(country, style: textTheme.bodyMedium),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                  Icon(Icons.more_vert, color: context.onSurface, size: 20.sp),
                 ],
               ),
             ),
