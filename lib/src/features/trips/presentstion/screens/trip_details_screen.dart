@@ -65,16 +65,24 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       //   overflow: TextOverflow.ellipsis,
       //   style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w600),
       // ),
-      actions: [
-        CircularIcon(
+      leading: GestureDetector(
+        onTap: () {
+          print("DATA");
+          Navigator.pop(context);
+        },
+        child: CircularIcon(
           icon: Icon(
             Icons.arrow_back_ios_new,
             size: 18.sp,
             color: context.onSurface,
           ),
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            // print("DATA");
+            // Navigator.pop(context);
+          },
         ),
-        Spacer(),
+      ),
+      actions: [
         CircularIcon(
           icon: Icon(Icons.share, size: 20.sp, color: context.onSurface),
 

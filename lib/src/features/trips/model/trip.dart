@@ -47,6 +47,7 @@ class Place {
     required this.activities,
   });
 }
+
 final Trip sampleTrip = Trip(
   id: 'trip_001',
   name: 'Tokyo Explorer',
@@ -62,7 +63,7 @@ final Trip sampleTrip = Trip(
       id: 'place_001',
       name: 'Tokyo Tower',
       imageUrl:
-          'https://images.unsplash.com/photo-1585578722235-8c6d71e4d8e1?w=800',
+          'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800',
       rating: 4.6,
       reviews: 18542,
       openTime: '09:00 AM',
@@ -86,11 +87,7 @@ final Trip sampleTrip = Trip(
       closeTime: 'Open 24 Hours',
       price: 0.0,
       category: 'City Experience',
-      activities: [
-        'Street Photography',
-        'People Watching',
-        'Shopping',
-      ],
+      activities: ['Street Photography', 'People Watching', 'Shopping'],
     ),
   ],
 );

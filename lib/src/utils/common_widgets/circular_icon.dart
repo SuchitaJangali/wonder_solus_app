@@ -8,13 +8,15 @@ class CircularIcon extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: context.surface,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20.r),
-        onTap: () => onTap,
+    return InkWell(
+      borderRadius: BorderRadius.circular(20.r),
+      onTap: () => onTap,
+      child: Card(
+        color: context.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
         child: SizedBox(
           width: 40.w,
           height: 40.w,
