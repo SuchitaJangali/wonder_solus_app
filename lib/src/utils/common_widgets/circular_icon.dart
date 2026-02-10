@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
 
 class CircularIcon extends StatelessWidget {
-  const CircularIcon({super.key, required this.iconData, required this.onTap});
-  final IconData iconData;
+  const CircularIcon({super.key, required this.icon, required this.onTap});
+  final Widget icon;
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,7 @@ class CircularIcon extends StatelessWidget {
         child: SizedBox(
           width: 40.w,
           height: 40.w,
-          child: Center(
-            child: Icon(
-              iconData, // better centered than arrow_back_ios
-              size: 20.sp,
-              color: context.onSurface,
-            ),
-          ),
+          child: Center(child: icon),
         ),
       ),
     );

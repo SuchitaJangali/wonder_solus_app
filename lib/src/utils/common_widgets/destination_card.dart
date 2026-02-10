@@ -57,8 +57,7 @@ class DestinationCard extends StatelessWidget {
                       imageUrl: imageUrl,
                       height: imageHeight,
                       width: double.infinity, // ✅ LIMIT decoded image size
-                      memCacheWidth: 800,
-                      memCacheHeight: 600,
+
                       fit: BoxFit.cover,
                       errorWidget: (_, __, ___) => Container(
                         height: imageHeight,
@@ -91,6 +90,7 @@ class DestinationCard extends StatelessWidget {
                           city,
                           style: context.text.titleMedium?.copyWith(
                             fontWeight: FontWeight.w500,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         6.h.height,

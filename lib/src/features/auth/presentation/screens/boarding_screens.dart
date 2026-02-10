@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/auth/domain/model/boarding_static_data.dart';
-import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
+import 'package:wonder_souls/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:wonder_souls/src/utils/common_widgets/common_button.dart';
 import 'package:wonder_souls/src/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
@@ -34,7 +34,7 @@ class _BoardingScreensState extends State<BoardingScreens> {
     } else {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        HomeBottomBar.routeName,
+        LoginScreen.routeName,
         (_) => false,
       );
     }
@@ -109,7 +109,7 @@ class _BoardingScreensState extends State<BoardingScreens> {
               bottom: 0,
               child: Card(
                 elevation: 6,
-                shadowColor: Colors.black.withOpacity(0.08),
+                shadowColor: Colors.black.withAlpha(20),
                 margin: EdgeInsets
                     .zero, // important when used in Stack / Positioned
                 shape: const RoundedRectangleBorder(
@@ -122,9 +122,11 @@ class _BoardingScreensState extends State<BoardingScreens> {
                     Clip.antiAlias, // clips children to rounded corners
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 32, 32, 24),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 32,
+                    ),
                     child: Column(
-                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
                           walkthroughList[currentPage].title,
@@ -136,15 +138,19 @@ class _BoardingScreensState extends State<BoardingScreens> {
                           ),
                         ),
                         16.h.height,
-                        Text(
-                          walkthroughList[currentPage].description,
-                          textAlign: TextAlign.center,
-                          style: context.text.labelMedium?.copyWith(
-                            fontSize: 16,
-                            height: 1.5,
+
+                        Flexible(
+                          child: Text(
+                            walkthroughList[currentPage].description,
+                            textAlign: TextAlign.center,
+                            style: context.text.labelMedium?.copyWith(
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
                           ),
                         ),
-                        const Spacer(),
+
+                        24.h.height,
 
                         /// Indicators
                         Row(
@@ -160,38 +166,33 @@ class _BoardingScreensState extends State<BoardingScreens> {
                                 color: index == currentPage
                                     ? context.colors.primary
                                     : context.colors.onSurfaceVariant.withAlpha(
-                                        20,
+                                        100,
                                       ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 24),
+
+                        24.h.height,
 
                         /// Buttons
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             if (currentPage != walkthroughList.length - 1)
-                              Expanded(
+                              Flexible(
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    color: context.colors.primary.withAlpha(30),
-                                    borderRadius: BorderRadius.circular(35.sp),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8.h,
+                                    horizontal: 32.w,
                                   ),
-                                  child: TextButton(
-                                    onPressed: _skipToEnd,
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8.h,
-                                        horizontal: 20.w,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          35.sp,
-                                        ),
-                                      ),
-                                    ),
+                                  decoration: BoxDecoration(
+                                    color: context.primary.withAlpha(20),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: _skipToEnd,
                                     child: Text(
                                       'Skip',
                                       style: context.text.titleMedium?.copyWith(
@@ -204,7 +205,6 @@ class _BoardingScreensState extends State<BoardingScreens> {
                             if (currentPage != walkthroughList.length - 1)
                               12.w.width,
                             Expanded(
-                              // flex: 2,
                               child: CommonButton(
                                 title: 'Continue',
                                 onPressed: _nextPage,
@@ -223,29 +223,4 @@ class _BoardingScreensState extends State<BoardingScreens> {
       ),
     );
   }
-}
-
-class InvertedCurveClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    path.lineTo(0, 40);
-
-    path.quadraticBezierTo(
-      size.width / 2,
-      -40, // 👈 controls curve depth (increase for deeper curve)
-      size.width,
-      40,
-    );
-
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

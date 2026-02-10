@@ -170,14 +170,23 @@ class SettingsMenuItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 4.w),
         child: Row(
           children: [
-            Icon(icon, size: 28.sp, color: context.colors.onSurfaceVariant),
+            Icon(
+              icon,
+              size: 28.sp,
+              color: iconColor ?? context.colors.onSurfaceVariant,
+            ),
             16.w.width,
-            Expanded(child: Text(title, style: context.text.titleSmall)),
+            Expanded(
+              child: Text(
+                title,
+                style: context.text.titleSmall?.copyWith(color: titleColor),
+              ),
+            ),
             if (showArrow)
               Icon(
                 Icons.chevron_right,
                 size: 24,
-                color: context.colors.onSurfaceVariant,
+                color: iconColor ?? context.colors.onSurfaceVariant,
               ),
           ],
         ),

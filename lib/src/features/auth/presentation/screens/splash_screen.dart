@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/core/assets/assets.dart';
 import 'package:wonder_souls/src/config/theme/app_colors.dart';
 import 'package:wonder_souls/src/features/auth/presentation/screens/boarding_screens.dart';
-import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

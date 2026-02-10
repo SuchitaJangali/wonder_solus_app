@@ -35,8 +35,7 @@ class TripCard extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: trip.imageUrl,
                   height: 170.h, // ✅ LIMIT decoded image size
-                  memCacheWidth: 800,
-                  memCacheHeight: 600,
+ 
                   width: double.infinity,
                   fit: BoxFit.cover,
                   errorWidget: (_, __, ___) => Container(

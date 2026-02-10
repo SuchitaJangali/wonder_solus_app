@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/route/app_routes.dart';
 import 'package:wonder_souls/src/config/theme/app_theme.dart';
-import 'package:wonder_souls/src/features/auth/presentation/screens/boarding_screens.dart';
 import 'package:wonder_souls/src/features/auth/presentation/screens/splash_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   /// System UI
   SystemChrome.setSystemUIOverlayStyle(
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
+          // home: LoginScreen(),
           initialRoute: SplashScreen.routeName,
           onGenerateRoute: generateRoute,
           theme: AppTheme.light, // ✅ Use your custom light theme

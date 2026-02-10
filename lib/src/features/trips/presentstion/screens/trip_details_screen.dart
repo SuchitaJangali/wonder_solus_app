@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/trips/model/trip.dart';
+import 'package:wonder_souls/src/features/trips/presentstion/screens/map_view.dart';
 import 'package:wonder_souls/src/features/trips/presentstion/widgets/date_tabs.dart';
 import 'package:wonder_souls/src/features/trips/presentstion/widgets/expandable_place_card.dart';
 import 'package:wonder_souls/src/utils/common_widgets/circular_icon.dart';
@@ -57,25 +58,30 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       pinned: true,
       backgroundColor: context.surface,
 
-      // // 👇 Title appears ONLY when collapsed
-      title: Text(
-        widget.trip?.name ?? '',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w600),
-      ),
-      leading: CircularIcon(
-        iconData: Icons.arrow_back_ios_new,
-        onTap: () => Navigator.pop(context),
-      ),
+      //  // 👇 Title appears ONLY when collapsed
+      // title: Text(
+      //   widget.trip?.name ?? '',
+      //   maxLines: 1,
+      //   overflow: TextOverflow.ellipsis,
+      //   style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+      // ),
       actions: [
         CircularIcon(
-          iconData: Icons.share,
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            size: 18.sp,
+            color: context.onSurface,
+          ),
+          onTap: () => Navigator.pop(context),
+        ),
+        Spacer(),
+        CircularIcon(
+          icon: Icon(Icons.share, size: 20.sp, color: context.onSurface),
 
           onTap: () => Navigator.pop(context),
         ),
         CircularIcon(
-          iconData: Icons.more_vert,
+          icon: Icon(Icons.more_vert, size: 20.sp, color: context.onSurface),
 
           onTap: () => Navigator.pop(context),
         ),
@@ -87,8 +93,7 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
           children: [
             CachedNetworkImage(
               imageUrl: widget.trip?.imageUrl ?? '',
-              memCacheWidth: 800,
-              memCacheHeight: 600,
+
               fit: BoxFit.cover,
               errorWidget: (_, __, ___) => Container(
                 color: Colors.grey[300],
@@ -158,25 +163,27 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
               color: Colors.grey[200],
               borderRadius: BorderRadius.circular(12.r),
             ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.map_outlined,
-                    size: 48.sp,
-                    color: Colors.grey[400],
-                  ),
-                  8.h.height,
-                  Text(
-                    'Map View',
-                    style: context.text.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: MapView(),
+
+            //  Center(
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Icon(
+            //         Icons.map_outlined,
+            //         size: 48.sp,
+            //         color: Colors.grey[400],
+            //       ),
+            //       8.h.height,
+            //       Text(
+            //         'Map View',
+            //         style: context.text.bodySmall?.copyWith(
+            //           color: Colors.grey[600],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ),
         ],
       ),

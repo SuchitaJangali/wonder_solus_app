@@ -37,8 +37,7 @@ class ArticleCard extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   fit: BoxFit.cover, // ✅ LIMIT decoded image size
-                  memCacheWidth: 800,
-                  memCacheHeight: 600,
+                
                   errorWidget: (_, __, ___) => Container(
                     color: context.colors.surface.withAlpha(20),
                     child: Icon(
