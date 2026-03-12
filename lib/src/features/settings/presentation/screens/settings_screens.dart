@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wonder_souls/src/utils/common_widgets/size.dart';
-import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
-import 'package:wonder_souls/src/utils/extensions/context_text.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
+
+import '../widgets/logout_bottom_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -124,17 +126,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Help & Support',
               onTap: () {},
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             // Logout
             SettingsMenuItem(
               icon: Icons.logout_rounded,
               title: 'Logout',
-              titleColor: const Color(0xFFEF4444),
-              iconColor: const Color(0xFFEF4444),
+              titleColor: context.colors.error,
+              iconColor: context.colors.error,
               showArrow: false,
-              onTap: () {},
+              onTap: () {
+                showLogoutBottomSheet(context);
+              },
             ),
-            const SizedBox(height: 100),
+            SizedBox(height: 100.h),
           ],
         ),
       ),

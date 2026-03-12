@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Screens
 import 'package:wonder_souls/src/features/home/presentation/screens/home_screen.dart';
 import 'package:wonder_souls/src/features/settings/presentation/screens/settings_screens.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/my_trips_screen.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/saved_trips_screen.dart';
-import 'package:wonder_souls/src/utils/common_widgets/size.dart';
-import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
-import 'package:wonder_souls/src/utils/extensions/context_text.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/my_trips_screen.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/saved_trips_screen.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
+
+import '../../../../config/core/assets/assets.dart';
 
 class HomeBottomBar extends StatefulWidget {
   const HomeBottomBar({super.key});
@@ -22,7 +24,7 @@ class _HomeBottomBarState extends State<HomeBottomBar>
   late final TabController _tabController;
 
   final List<String> _titles = [
-    'Wonder Solus',
+    "Wander Souls",
     'Saved',
     'My Trips',
     'Settings',
@@ -55,14 +57,14 @@ class _HomeBottomBarState extends State<HomeBottomBar>
         centerTitle: true,
         leading: Padding(
           padding: const EdgeInsets.all(8),
-          child: Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: context.primary,
-              borderRadius: BorderRadius.circular(8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+
+            child: Image.asset(
+              // placeholder icon for your logo
+              Assets.logo,
+              width: 50.w,
             ),
-            padding: const EdgeInsets.all(4),
-            child: Icon(Icons.eco, color: context.onPrimary),
           ),
         ),
 

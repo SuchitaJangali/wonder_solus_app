@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 
 class SocialLoginButtonIcon extends StatelessWidget {
   final VoidCallback onPressed;

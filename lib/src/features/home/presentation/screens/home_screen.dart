@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/features/trips/model/static_data.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/list_article.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/list_destination.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/trip_details_screen.dart';
-import 'package:wonder_souls/src/utils/common_widgets/article_card.dart';
-import 'package:wonder_souls/src/utils/common_widgets/destination_card.dart';
-import 'package:wonder_souls/src/utils/common_widgets/size.dart';
-import 'package:wonder_souls/src/utils/extensions/context_colors.dart';
-import 'package:wonder_souls/src/utils/extensions/context_text.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/list_article.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/list_destination.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/trip_details_screen.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/article_card.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/destination_card.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
+import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
+/// HomeScreen
+///
+/// • Main landing screen of the app
+/// • Displays search bar UI (non-functional placeholder)
+/// • Shows popular destinations (horizontal list)
+/// • Navigates to destination list screen
+/// • Navigates to trip details screen on destination tap
+/// • Shows popular articles (horizontal list)
+/// • Navigates to article list screen
+/// • Uses reusable common widgets (DestinationCard, ArticleCard)
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,6 +31,7 @@ class HomeScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+            mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 🔍 Search Bar
@@ -79,7 +90,7 @@ class HomeScreen extends StatelessWidget {
             16.h.height,
 
             AspectRatio(
-              aspectRatio: 4 / 3,
+              aspectRatio: 6 / 4,
 
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,

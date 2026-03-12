@@ -4,9 +4,9 @@ import 'package:wonder_souls/src/features/auth/presentation/screens/login_screen
 import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
 import 'package:wonder_souls/src/features/auth/presentation/screens/splash_screen.dart';
 import 'package:wonder_souls/src/features/trips/model/trip.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/list_article.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/list_destination.dart';
-import 'package:wonder_souls/src/features/trips/presentstion/screens/trip_details_screen.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/list_article.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/list_destination.dart';
+import 'package:wonder_souls/src/features/trips/presentation/screens/trip_details_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -16,10 +16,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => SplashScreen(),
       );
     case LoginScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => LoginScreen(),
-      );
+      return MaterialPageRoute(builder: (_) => const LoginScreen());
     case HomeBottomBar.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
