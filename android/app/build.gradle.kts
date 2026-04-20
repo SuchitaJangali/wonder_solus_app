@@ -29,6 +29,11 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        defaultConfig {
+            manifestPlaceholders = [
+                GOOGLE_KEY: localProperties.getProperty("GOOGLE_KEY")
+            ]
+        }
     }
 
     buildTypes {
