@@ -5,6 +5,8 @@ import 'package:wonder_souls/src/features/trips/presentation/widgets/trip_card.d
 import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
 
+import '../../model/trip.dart';
+
 class MyTripsScreen extends StatefulWidget {
   const MyTripsScreen({super.key});
 
@@ -111,7 +113,7 @@ class _MyTripsScreenState extends State<MyTripsScreen>
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () =>
-              Navigator.pushNamed(context, TripDetailsScreen.routeName),
+              Navigator.pushNamed(context, TripDetailsScreen.routeName, arguments:  sampleTrip),
           child: TripCard(trip: trips[index]),
         );
       },

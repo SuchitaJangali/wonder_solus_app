@@ -2,7 +2,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl = "https://wandersouls.azurewebsites.net/api";
-  static const String mapURL = "https://maps.googleapis.com/";
+  static const String mapURL = "https://maps.googleapis.com/maps/api/";
 
 
   //Auth

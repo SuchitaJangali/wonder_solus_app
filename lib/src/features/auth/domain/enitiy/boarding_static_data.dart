@@ -12,7 +12,7 @@ final walkthroughList = [
     image: "assets/images/on_boarding2.png",
   ),
   WalkthroughData(
-    title: "Intelligent Trip Planning with Tripify AI",
+    title: "Intelligent Trip Planning with WanderSouls AI",
     description:
         "Let our AI plan a detailed trip tailored to your preferences. Easy planning for your unforgettable experience.",
     image: "assets/images/on_boarding3.png",

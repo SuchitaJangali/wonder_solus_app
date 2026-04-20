@@ -23,10 +23,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => HomeBottomBar(),
       );
     case TripDetailsScreen.routeName:
-      var arg = routeSettings.arguments;
+      final arg = routeSettings.arguments as Trip;
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => TripDetailsScreen(trip: arg as Trip?),
+        builder: (_) => TripDetailsScreen(trip: arg),
       );
     case BoardingScreens.routeName:
       return MaterialPageRoute(

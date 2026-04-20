@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wonder_souls/src/features/auth/domain/enitiy/boarding_static_data.dart';
-import 'package:wonder_souls/src/features/auth/presentation/screens/login_screen.dart';
-import 'package:wonder_souls/src/config/utils/common_widgets/common_button.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/common_button.dart'
+    show CommonButton;
 import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
+
+import '../../domain/enitiy/boarding_static_data.dart' show walkthroughList;
+import 'login_screen.dart' show LoginScreen;
 
 class BoardingScreens extends StatefulWidget {
   const BoardingScreens({super.key});

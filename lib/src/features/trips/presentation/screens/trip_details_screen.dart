@@ -1,17 +1,23 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer' show log;
+
+import 'package:cached_network_image/cached_network_image.dart'
+    show CachedNetworkImage;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wonder_souls/src/features/trips/model/trip.dart';
-import 'package:wonder_souls/src/features/trips/presentation/screens/map_view.dart';
-import 'package:wonder_souls/src/features/trips/presentation/widgets/date_tabs.dart';
-import 'package:wonder_souls/src/features/trips/presentation/widgets/expandable_place_card.dart';
-import 'package:wonder_souls/src/config/utils/common_widgets/circular_icon.dart';
 import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
 
+import '../../../../config/utils/common_widgets/circular_icon.dart'
+    show CircularIcon;
+import 'package:wonder_souls/src/features/trips/model/trip.dart';
+
+import '../widgets/date_tabs.dart' show DateTabs;
+import '../widgets/expandable_place_card.dart' show ExpandablePlaceCard;
+import 'map_view.dart' show MapView;
+
 class TripDetailsScreen extends StatefulWidget {
-  Trip? trip;
+  final Trip trip;
   static const String routeName = "/TripDetailsScreen";
 
   TripDetailsScreen({super.key, required this.trip});
@@ -24,7 +30,11 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    widget.trip = sampleTrip;
+    log(
+      "TripDetailsScreen initialized with trip: ${widget.trip.name}",
+      name: "TripDetailsScreen::initSet",
+      time: DateTime.timestamp(),
+    );
   }
 
   @override
@@ -65,22 +75,20 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
       //   overflow: TextOverflow.ellipsis,
       //   style: context.text.labelMedium?.copyWith(fontWeight: FontWeight.w600),
       // ),
-      leading: GestureDetector(
+      leading: CircularIcon(
+        icon: Icon(
+          Icons.arrow_back_ios_new,
+          size: 18.sp,
+          color: context.onSurface,
+        ),
         onTap: () {
-          print("DATA");
+          log(
+            "Navigating back from TripDetailsScreen",
+            name: "TripDetailsScreen::back",
+            time: DateTime.timestamp(),
+          );
           Navigator.pop(context);
         },
-        child: CircularIcon(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            size: 18.sp,
-            color: context.onSurface,
-          ),
-          onTap: () {
-            // print("DATA");
-            // Navigator.pop(context);
-          },
-        ),
       ),
       actions: [
         CircularIcon(

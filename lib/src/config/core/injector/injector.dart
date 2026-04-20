@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wonder_souls/src/config/core/config/app_env.dart';
 import 'package:wonder_souls/src/config/core/local_storage/token_storage.dart';
 import 'package:wonder_souls/src/config/core/services/api_services.dart';
 import 'package:wonder_souls/src/config/core/services/google_map_services.dart';
@@ -15,6 +16,13 @@ import 'package:wonder_souls/src/features/auth/domain/usecase/logout_usecase.dar
 import 'package:wonder_souls/src/features/auth/presentation/cubit/isLoginCubit/is_login_cubit.dart';
 import 'package:wonder_souls/src/features/auth/presentation/cubit/login/auth_cubit.dart';
 import 'package:wonder_souls/src/features/auth/presentation/cubit/password/password_cubit.dart';
+import 'package:wonder_souls/src/features/home/data/datasource/home_remote_datasource.dart';
+import 'package:wonder_souls/src/features/home/data/repositories/home_repository_implementation.dart';
+import 'package:wonder_souls/src/features/home/domain/repositories/home_repository.dart';
+import 'package:wonder_souls/src/features/home/domain/usecase/get_trip_usecase.dart';
+import 'package:wonder_souls/src/features/home/presentation/cubit/trips/get_trips_cubit.dart';
+
+import '../logger/debug_log_service.dart';
 
 final sl = GetIt.instance;
 
@@ -27,28 +35,36 @@ Future<void> setupLocator() async {
   /// CORE SERVICES
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage(sl()));
 
-  sl.registerLazySingleton<ApiService>(() => ApiService(sl(),baseURL: ApiConstants.baseUrl));
   sl.registerLazySingleton<ApiService>(
-    () => GoogleMapsApiService(sl(), baseURL: ApiConstants.mapURL
+    () => ApiService(sl(), baseURL: ApiConstants.baseUrl),
+  );
+  sl.registerLazySingleton<GoogleMapsApiService>(
+    () => GoogleMapsApiService(
+      apiKey: AppEnv.googleKey,
+      baseURL: ApiConstants.mapURL,
     ),
   );
-  
-  
-  
+  sl.registerLazySingleton<DebugLogService>(() => DebugLogService());
+
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   initAuth();
+  initHome();
 }
 
 Future<void> initAuth() async {
   /// ---------------- DATA SOURCE ----------------
-  /// 
-    sl.registerLazySingleton<AuthLocalDataSource>(
-    () => AuthLocalDataSourceImpl( sl()),
+  ///
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(apiService: sl(), tokenStorage: sl(),localDataSource: sl()),
+    () => AuthRemoteDataSourceImpl(
+      apiService: sl(),
+      tokenStorage: sl(),
+      localDataSource: sl(),
+    ),
   );
 
   /// ---------------- REPOSITORY ----------------
@@ -70,4 +86,36 @@ Future<void> initAuth() async {
   sl.registerFactory<IsLoginCubit>(() => IsLoginCubit(sl()));
 
   sl.registerFactory<PasswordCubit>(() => PasswordCubit());
+}
+
+Future<void> initHome() async {
+  /// ---------------- DATA SOURCE ----------------
+  ///
+  // sl.registerLazySingleton<AuthLocalDataSource>(
+  //       () => AuthLocalDataSourceImpl(sl()),
+  // );
+
+  sl.registerLazySingleton<HomeRemoteDatasource>(
+    () => HomeRemoteDatasourceImpl(apiService: sl()),
+  );
+
+  /// ---------------- REPOSITORY ----------------
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImplementation(homeRemoteDatasource: sl()),
+  );
+
+  /// ---------------- USECASE ----------------
+  sl.registerLazySingleton(() => GetTripUseCase(homeRepository: sl()));
+
+  // sl.registerLazySingleton(() => IsLoggedInUseCase(sl()));
+  //
+  // sl.registerLazySingleton(() => LogoutUseCase(sl()));
+
+  /// ---------------- Cubit ----------------
+
+  sl.registerFactory<GetTripsCubit>(() => GetTripsCubit(sl()));
+
+  // sl.registerFactory<IsLoginCubit>(() => IsLoginCubit(sl()));
+  //
+  // sl.registerFactory<PasswordCubit>(() => PasswordCubit());
 }

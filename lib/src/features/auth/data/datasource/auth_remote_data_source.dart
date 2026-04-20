@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:wonder_souls/src/config/core/logger/app_logger.dart';
 import 'package:wonder_souls/src/config/model/user_model.dart';
 import 'package:wonder_souls/src/config/utils/api_constant.dart';
 import 'package:wonder_souls/src/config/core/local_storage/token_storage.dart';
@@ -42,11 +42,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiService apiService;
   final TokenStorage tokenStorage;
   final AuthLocalDataSource localDataSource;
+  
 
   AuthRemoteDataSourceImpl({
     required this.apiService,
     required this.tokenStorage,
     required this.localDataSource,
+  
   });
 
   @override
@@ -62,7 +64,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
   }
 
-@override
+  @override
   Future<ApiResult<String>> login({
     required String email,
     required String password,
@@ -93,16 +95,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           }
 
           return Success(loginData.token);
-      default:   return Failure(message: "Something went wrong");
+        default:
+          return Failure(message: "Something went wrong");
       }
-    } catch (e) {
-      return Failure(message: e.toString());
+    } on Exception catch (e) {
+      return _handleError(e);
     }
   }
 
   @override
   Future<ApiResult<void>> deleteAccount({required String userId}) {
-    return apiService.delete<void>(
+  return apiService.delete<void>(
       ApiConstants.userById(userId),
       fromJson: (_) => null,
     );
@@ -115,6 +118,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return token.isEmpty ? false : true;
     } on Exception catch (e) {
+      log.w("Error checking login status: $e");
       return false;
     }
   }
@@ -130,6 +134,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await localDataSource.clearUser();
       return;
     } on Exception catch (e) {
+
+      log.w("Error during logout: $e");
       return;
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/core/assets/assets.dart';
 import 'package:wonder_souls/src/config/theme/app_colors.dart';
+import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/features/auth/presentation/cubit/isLoginCubit/is_login_cubit.dart';
 import 'package:wonder_souls/src/features/auth/presentation/screens/boarding_screens.dart';
 import 'package:wonder_souls/src/features/home/presentation/screens/home_bottom_bar.dart';
@@ -40,7 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.lightPrimary, // green background (#34B27D)
+        backgroundColor: AppColors.lightPrimary.withAlpha(
+          100,
+        ), // green background (#34B27D)
         body: SafeArea(
           child: Stack(
             children: [
@@ -51,12 +54,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   children: [
                     // Replace this Container with your logo image or widget
                     Image.asset(
-                      // placeholder icon for your logo
                       Assets.logo,
-                      width: 80.w,
+                      width: double.infinity,
+                      // color: Colors.white,
                     ),
 
-                    const SizedBox(height: 16),
+                   16.h.height,
 
                     const Text(
                       'WonderSolus',
@@ -77,8 +80,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 right: 0,
                 child: Center(
                   child: SizedBox(
-                    width: 48,
-                    height: 48,
+                    width: 48.w,
+                    height: 48.h,
                     child: CircularProgressIndicator(
                       color: Colors.white,
                       strokeWidth: 4,

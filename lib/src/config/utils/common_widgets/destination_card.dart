@@ -2,29 +2,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wonder_souls/src/config/utils/common_widgets/saved_icon.dart';
-import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
 
 class DestinationCard extends StatelessWidget {
   final String imageUrl;
-  final String city;
+  final String? city;
   final String country;
-  final String flagEmoji;
-
-  /// NEW
-  final double cardWidth;
-  final double imageHeight;
+  final String? flagEmoji;
 
   const DestinationCard({
     super.key,
     required this.imageUrl,
-    required this.city,
+    this.city,
     required this.country,
-    required this.flagEmoji,
-    // default for Home
-    this.cardWidth = 200,
-    this.imageHeight = 140, // default for Home
+    this.flagEmoji,
   });
 
   @override
@@ -32,95 +24,104 @@ class DestinationCard extends StatelessWidget {
     final colors = context.colors;
     final textTheme = context.text;
 
+    // Image = 55% of the card height, info = rest
+    // Card width comes from parent SizedBox — card never sets its own width
+    final imageHeight = MediaQuery.of(context).size.height * 0.20;
+
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       elevation: 4,
       shadowColor: colors.onSurface.withAlpha(25),
       color: context.surface,
-      child: SizedBox(
-        width: cardWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            // IMAGE
-            Stack(
+      clipBehavior: Clip.antiAlias, // rounds image corners via card clip
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // only as tall as content
+        children: [
+          // ── IMAGE ──────────────────────────────────────────────
+          // SizedBox gives finite height.
+          // Stack(fit: expand) pushes finite bounds into CachedNetworkImage.
+          // NO explicit width anywhere — width comes from parent SizedBox.
+          SizedBox(
+            height: imageHeight,
+            child: Stack(
+              fit: StackFit.expand,
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 11,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                      bottom: Radius.circular(16),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      height: imageHeight,
-                      width: double.infinity, // ✅ LIMIT decoded image size
-
-                      fit: BoxFit.cover,
-                      errorWidget: (_, __, ___) => Container(
-                        height: imageHeight,
-                        color: colors.surface,
-                        child: Icon(
-                          Icons.image,
-                          color: colors.surface.withAlpha(20),
-                          size: 40,
-                        ),
-                      ),
+                CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                  // no width, no height — Stack handles it
+                  placeholder: (_, __) => Container(
+                    color: colors.surfaceVariant,
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (_, __, ___) => Container(
+                    color: colors.surfaceVariant,
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      color: colors.onSurfaceVariant,
+                      size: 36.sp,
                     ),
                   ),
                 ),
-                Positioned(top: 12, right: 12, child: SavedIcon()),
+                Positioned(top: 10.h, right: 10.w, child: SavedIcon()),
               ],
             ),
+          ),
 
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(12.sp),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-              
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
+          // ── INFO ───────────────────────────────────────────────
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        city ?? "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
                         children: [
+                          Text(
+                            flagEmoji ?? "",
+                            style: TextStyle(fontSize: 14.sp),
+                          ),
+                          SizedBox(width: 6.w),
                           Expanded(
                             child: Text(
-                              city,
-                               maxLines: 1, 
-                              style: context.text.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                overflow: TextOverflow.ellipsis,
+                              country,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colors.onSurface.withAlpha(160),
+                                fontSize: 12.sp,
                               ),
                             ),
                           ),
-                          6.h.height,
-                          Row(
-                            children: [
-                              Text(
-                                flagEmoji,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: Text(country, style: textTheme.bodyMedium),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
-                    ),
-                    Icon(Icons.more_vert, color: context.onSurface, size: 20.sp),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                Icon(
+                  Icons.more_vert,
+                  color: colors.onSurface.withAlpha(180),
+                  size: 20.sp,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

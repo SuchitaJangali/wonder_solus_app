@@ -61,179 +61,196 @@ class _LoginScreenState extends State<LoginScreen> {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    50.h.height,
-                    // Logo
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.r),
-                      child: Image.asset(
-                        // placeholder icon for your logo
-                        Assets.logo,
-                        width: 100.w,
-                      ),
-                    ),
-
-                    SizedBox(height: 32.h),
-
-                    Text(
-                      "Let's Get Started!",
-                      style: context.text.titleLarge?.copyWith(
-                        fontSize: 36,
-                        letterSpacing: -0.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    12.h.height,
-
-                    Text(
-                      "Your Passport to Adventure Awaits",
-                      style: context.text.labelMedium?.copyWith(
-                        color: context.colors.onSurface.withAlpha(200),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    40.h.height,
-
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          CommonTextFormField(
-                            hintText: 'Enter Email',
-                            controller: usernameController,
-
-                            validator: (value) =>
-                                Validators.validateEmail(value),
-                          ),
-                          16.h.height,
-                          BlocProvider(
-                            create: (_) => PasswordCubit(),
-                            child: BlocBuilder<PasswordCubit, bool>(
-                              builder: (context, obscure) {
-                                return CommonTextFormField(
-                                  suffixIcon: IconButton(
-                                    icon: Icon(
-                                      obscure
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                    ),
-                                    onPressed: () {
-                                      context
-                                          .read<PasswordCubit>()
-                                          .togglePassword();
-                                    },
-                                  ),
-                                  obscureText: obscure,
-                                  hintText: 'Enter Password',
-                                  controller: passwordController,
-                                  validator: (value) =>
-                                      Validators.validatePassword(value),
-                                );
-                              },
-                            ),
-                          ),
-                          24.h.height,
-                          CommonButton(
-                            title: "Login",
-                            isLoading: state is AuthLoading,
-                            onPressed: () {
-                              FocusScope.of(context).unfocus();
-                              if (!(formKey.currentState?.validate() ?? true)) {
-                                return;
-                              }
-                              context.read<AuthCubit>().login(
-                                usernameController.text,
-                                passwordController.text,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    32.h.height,
-                    Row(
+            child: CustomScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: [
+                /// TOP SECTION
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
                       children: [
-                        Flexible(
-                          child: Divider(
-                            color: context.colors.onSurface.withAlpha(100),
+                        SizedBox(height: 20.h),
+                        Image.asset(Assets.logo, height: 0.18.sh),
+                        20.h.height,
+                        Text(
+                          "Let's Get Started!",
+                          style: context.text.titleLarge?.copyWith(
+                            // fontSize: 26.sp,
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        4.w.width,
-                        Text("OR", style: context.text.labelSmall),
-                        4.w.width,
-                        Flexible(
-                          child: Divider(
-                            color: context.colors.onSurface.withAlpha(100),
+                        10.h.height,
+                        Text(
+                          "Your Passport to Adventure Awaits",
+                          style: context.text.labelMedium?.copyWith(
+                            color: context.colors.onSurface.withAlpha(200),
                           ),
+                          textAlign: TextAlign.center,
                         ),
+                        20.h.height,
                       ],
                     ),
-                    24.h.height,
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SocialLoginButtonIcon(
-                          onPressed: () {},
-                          icon: Image.asset(Assets.google, scale: 28),
-                        ),
-                        16.w.width,
-                        SocialLoginButtonIcon(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            Assets.apple,
-                            scale: 28,
-                            color: context.colors.onSurfaceVariant,
-                            colorBlendMode: BlendMode.srcIn,
-                          ),
-                        ),
-                        16.w.width,
-                        SocialLoginButtonIcon(
-                          onPressed: () {},
-                          icon: Image.asset(Assets.facebook, scale: 28),
-                        ),
-                        16.w.width,
-                        SocialLoginButtonIcon(
-                          onPressed: () {},
-                          icon: Image.asset(Assets.twitter, scale: 28),
-                        ),
-                      ],
-                    ),
-
-                    24.h.height,
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Privacy Policy',
-                            style: context.text.bodyMedium,
-                          ),
-                        ),
-                        Text(' • ', style: context.text.bodyMedium),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Terms of Service',
-                            style: context.text.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                    24.h.height,
-                  ],
+                  ),
                 ),
-              ),
+
+                /// THIS IS MAGIC 🔥
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      children: [
+                        /// Acts like Spacer
+                        ///
+                        12.h.height,
+                        Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              CommonTextFormField(
+                                hintText: 'Enter Email',
+                                controller: usernameController,
+                                validator: (value) =>
+                                    Validators.validateEmail(value),
+                              ),
+
+                              12.h.height,
+
+                              BlocProvider(
+                                create: (_) => PasswordCubit(),
+                                child: BlocBuilder<PasswordCubit, bool>(
+                                  builder: (context, obscure) {
+                                    return CommonTextFormField(
+                                      obscureText: obscure,
+                                      hintText: 'Enter Password',
+                                      controller: passwordController,
+                                      validator: (value) =>
+                                          Validators.validatePassword(value),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          obscure
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
+                                        ),
+                                        onPressed: () {
+                                          context
+                                              .read<PasswordCubit>()
+                                              .togglePassword();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+
+                              16.h.height,
+
+                              CommonButton(
+                                title: "Login",
+                                isLoading: state is AuthLoading,
+                                onPressed: () {
+                                  FocusScope.of(context).unfocus();
+                                  if (!(formKey.currentState?.validate() ??
+                                      true)) {
+                                    return;
+                                  }
+                                  context.read<AuthCubit>().login(
+                                    usernameController.text,
+                                    passwordController.text,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Spacer(),
+
+                        /// BOTTOM
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Divider(
+                                    color: context.colors.onSurface.withAlpha(
+                                      100,
+                                    ),
+                                  ),
+                                ),
+                                4.w.width,
+                                Text("OR", style: context.text.labelSmall),
+                                4.w.width,
+                                Flexible(
+                                  child: Divider(
+                                    color: context.colors.onSurface.withAlpha(
+                                      100,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            12.h.height,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SocialLoginButtonIcon(
+                                  onPressed: () {},
+                                  icon: Image.asset(Assets.google, scale: 26),
+                                ),
+                                10.w.width,
+                                SocialLoginButtonIcon(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    Assets.apple,
+                                    color: context.onSurface,
+                                    scale: 26,
+                                  ),
+                                ),
+                                10.w.width,
+                                SocialLoginButtonIcon(
+                                  onPressed: () {},
+                                  icon: Image.asset(Assets.facebook, scale: 26),
+                                ),
+                                10.w.width,
+                                SocialLoginButtonIcon(
+                                  onPressed: () {},
+                                  icon: Image.asset(Assets.twitter, scale: 26),
+                                ),
+                              ],
+                            ),
+
+                            // Spacer(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Privacy Policy',
+                                    style: context.text.bodyMedium,
+                                  ),
+                                ),
+                                Text(' • ', style: context.text.bodyMedium),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Terms of Service',
+                                    style: context.text.bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Spacer(),
+                          ],
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );

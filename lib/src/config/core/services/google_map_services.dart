@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:wonder_souls/src/config/core/model/place_model.dart';
 import 'package:wonder_souls/src/config/model/failure.dart';
 
 class GoogleMapsApiService {
@@ -9,7 +10,7 @@ class GoogleMapsApiService {
   final String apiKey; 
   final String baseURL;
 
-  GoogleMapsApiService({required this.apiKey,  required this.baseURL}) : dio = Dio(
+  GoogleMapsApiService( {required this.apiKey,  required this.baseURL}) : dio = Dio(
         BaseOptions(
           baseUrl: baseURL,
           connectTimeout: const Duration(seconds: 15),
@@ -43,15 +44,20 @@ class GoogleMapsApiService {
 
       final data = response.data;
 
-      if (data == null || data["predictions"] == null) {
-        return const Right([]);
-      }
+if(data["status"]=='OK'){
+  
+        if (data == null || data["predictions"] == null) {
+          return const Right([]);
+        }
 
-      final places = (data["predictions"] as List)
-          .map((e) => PlaceModel.fromJson(e))
-          .toList();
-
+        final places = (data["predictions"] as List)
+            .map((e) => PlaceModel.fromJson(e))
+            .toList();
       return Right(places);
+}else{
+return Left(Failure ( message:  data["error_message"]));
+
+}
     } on DioException catch (e) {
       return Left(Failure(message:  e.message ?? "Network error"));
     } catch (e) {

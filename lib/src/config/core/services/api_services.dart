@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:wonder_souls/src/config/utils/api_constant.dart';
 import '../../model/api_result.dart';
 import '../../model/failure.dart';
 import '../../model/success.dart';

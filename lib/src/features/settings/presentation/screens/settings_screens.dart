@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:wonder_souls/src/config/utils/common_widgets/size.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_colors.dart';
 import 'package:wonder_souls/src/config/utils/extensions/context_text.dart';
+import 'package:wonder_souls/src/features/settings/presentation/widgets/menu_item.dart';
 
 import '../widgets/logout_bottom_sheet.dart';
 
@@ -14,6 +16,21 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  PackageInfo? info;
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  Future<void> load() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+
+    info = packageInfo;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -81,54 +98,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             24.h.height,
             // Settings Menu Items
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.grid_view_rounded,
               title: 'Travel Preferences',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.person_outline_rounded,
               title: 'Personal Info',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.shield_outlined,
               title: 'Account & Security',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.star_outline_rounded,
               title: 'Billing & Subscriptions',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.credit_card_outlined,
               title: 'Payment Methods',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.swap_vert_rounded,
               title: 'Linked Accounts',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.remove_red_eye_outlined,
               title: 'App Appearance',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.show_chart_rounded,
               title: 'Data & Analytics',
               onTap: () {},
             ),
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.help_outline_rounded,
               title: 'Help & Support',
               onTap: () {},
             ),
             SizedBox(height: 8.h),
             // Logout
-            SettingsMenuItem(
+            MenuItem(
               icon: Icons.logout_rounded,
               title: 'Logout',
               titleColor: context.colors.error,
@@ -139,59 +156,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
             SizedBox(height: 100.h),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
-class SettingsMenuItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final Color? titleColor;
-  final Color? iconColor;
-  final bool showArrow;
-  final VoidCallback onTap;
-
-  const SettingsMenuItem({
-    super.key,
-    required this.icon,
-    required this.title,
-    this.titleColor,
-    this.iconColor,
-    this.showArrow = true,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
-      child: Container(
-        color: context.colors.surface,
-        padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 4.w),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 28.sp,
-              color: iconColor ?? context.colors.onSurfaceVariant,
-            ),
-            16.w.width,
-            Expanded(
-              child: Text(
-                title,
-                style: context.text.titleSmall?.copyWith(color: titleColor),
+            Text(
+              info == null ? '' : 'v${info!.version} (${info!.buildNumber})',
+              style: context.text.bodySmall?.copyWith(
+                color: context.colors.onSurfaceVariant,
               ),
             ),
-            if (showArrow)
-              Icon(
-                Icons.chevron_right,
-                size: 24,
-                color: iconColor ?? context.colors.onSurfaceVariant,
-              ),
           ],
         ),
       ),
