@@ -15,6 +15,9 @@ import 'package:wonder_souls/src/features/auth/domain/usecase/logout_usecase.dar
 import 'package:wonder_souls/src/features/auth/presentation/cubit/isLoginCubit/is_login_cubit.dart';
 import 'package:wonder_souls/src/features/auth/presentation/cubit/login/auth_cubit.dart';
 import 'package:wonder_souls/src/features/auth/presentation/cubit/password/password_cubit.dart';
+import 'package:wonder_souls/src/config/theme/theme_cubit.dart';
+import 'package:wonder_souls/src/features/auth/presentation/cubit/signup/signup_cubit.dart';
+import 'package:wonder_souls/src/features/trips/presentation/cubit/saved_places_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -27,14 +30,16 @@ Future<void> setupLocator() async {
   /// CORE SERVICES
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage(sl()));
 
-  sl.registerLazySingleton<ApiService>(() => ApiService(sl(),baseURL: ApiConstants.baseUrl));
   sl.registerLazySingleton<ApiService>(
-    () => GoogleMapsApiService(sl(), baseURL: ApiConstants.mapURL
+    () => ApiService(sl(), baseURL: ApiConstants.baseUrl),
+  );
+  sl.registerLazySingleton<GoogleMapsApiService>(
+    () => GoogleMapsApiService(
+      apiKey: ApiConstants.googleMapApiKey,
+      baseURL: ApiConstants.mapURL,
     ),
   );
-  
-  
-  
+
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   initAuth();
@@ -42,13 +47,17 @@ Future<void> setupLocator() async {
 
 Future<void> initAuth() async {
   /// ---------------- DATA SOURCE ----------------
-  /// 
-    sl.registerLazySingleton<AuthLocalDataSource>(
-    () => AuthLocalDataSourceImpl( sl()),
+  ///
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(apiService: sl(), tokenStorage: sl(),localDataSource: sl()),
+    () => AuthRemoteDataSourceImpl(
+      apiService: sl(),
+      tokenStorage: sl(),
+      localDataSource: sl(),
+    ),
   );
 
   /// ---------------- REPOSITORY ----------------
@@ -66,8 +75,13 @@ Future<void> initAuth() async {
   sl.registerFactory<AuthCubit>(
     () => AuthCubit(loginUseCase: sl(), logoutUseCase: sl()),
   );
-
   sl.registerFactory<IsLoginCubit>(() => IsLoginCubit(sl()));
 
   sl.registerFactory<PasswordCubit>(() => PasswordCubit());
+
+  sl.registerFactory<SignUpCubit>(() => SignUpCubit(sl()));
+
+  sl.registerFactory<ThemeCubit>(() => ThemeCubit(sl()));
+
+  sl.registerFactory<SavedPlacesCubit>(() => SavedPlacesCubit(sl()));
 }
